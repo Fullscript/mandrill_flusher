@@ -12,7 +12,6 @@ var password = process.argv[3];
 var mandrill = new Nightmare()
   .use( mandrill.login(username, password) )
   .use( mandrill.getWebHooks() )
-  //mandrill.webhooks is an array with all the webhooks links
   .use( mandrill.collectWebHook() )
   .use( mandrill.giveUpHooks() )
   .run()
