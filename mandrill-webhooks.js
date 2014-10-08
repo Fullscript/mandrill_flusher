@@ -18,7 +18,7 @@ var login = exports.login = function(username, password) {
   };
 };
 
-var collectWebHook = exports.collectWebHook = function (webhooks) {
+var collectWebHook = exports.collectWebHook = function () {
   return function (nightmare) {
     webhooks.forEach(function (webhook){
       nightmare
@@ -36,15 +36,15 @@ var getWebHooks = exports.getWebHooks = function () {
       .evaluate(function (page) {
         return document.documentElement.innerHTML;
       }, function (res) {
-        rgEx = /(\/settings\/webhooks\/curl-batch\?[\w\d:;=\-\s\.&]+)/;
+        rgEx = /(\/settings\/webhooks\/curl-batch\?[\w\d:;=\-\s\.&]+)/g;
         var matches = res.match(rgEx);
-        matches.pop();
+
         matches.forEach(function (match, index, array) {
           var temp = match.replace(" ", "%20");
           temp = temp.replace("&amp;", "&")
           webhooks.push(temp);
         });
-        return webhooks
+        console.log(webhooks);
       });
   };
 };
@@ -80,17 +80,22 @@ var runWebHook = exports.runWebHooks = function (webhook) {
           console.log('\nstdout: ' + stdout)
           console.log('\nstderr '+ stderr)
           if (err !== null){
-            console.log('exec error: '+error);
+            console.log('exec err: ' + err);
           }
         });
-        removeWebhook = webhook.replace("curl-batch", "stop-batch");
-        console.log("\n Remove Link: "+removeWebhook);
       })
-      .goto('https://mandrillapp.com'+removeWebhook)
-      .wait()
-      .screenshot('screenshot.jpg')
   };
 };
 
+var giveUpHooks = exports.giveUpHooks = function (){
+  return function (nightmare) {
+    webhooks.forEach(function (){
+      nightmare
+        .goto("https://mandrillapp.com/settings/webhooks/batches?id=3")
+        .click('td > a.btn.btn-small.btn-danger')
+        .wait()
+    })
+  }
+};
 //URL-link-example:
 //https://mandrillapp.com/settings/webhooks/curl-batch?id=3&batch=2014-10-07%2021:31:27.861136539
