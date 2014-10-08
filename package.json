@@ -1,0 +1,29 @@
+{
+  "name": "mandrill_flusher",
+  "version": "0.1.0",
+  "description": "This is a nightmare script to clean out backlogged mandrill webhooks.",
+  "main": "mandrill-webhooks.js",
+  "dependencies": {
+    "nightmare": "^1.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node index.js 'username' 'password'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HealthWave/mandrill_flusher.git"
+  },
+  "keywords": [
+    "nightmare",
+    "phantom",
+    "mandrill",
+    "webhooks"
+  ],
+  "author": "@patvice & @uri",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HealthWave/mandrill_flusher/issues"
+  },
+  "homepage": "https://github.com/HealthWave/mandrill_flusher"
+}
