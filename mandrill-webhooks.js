@@ -19,8 +19,9 @@ var login = exports.login = function(username, password) {
 
 var collectWebHook = exports.collectWebHook = function () {
   return function (nightmare) {
-    webhooks.forEach(function (webhook){
+    webhooks.forEach(function (webhook, index){
       nightmare
+        console.log('Clean webhook #'+(index+1)+"\n--------------------------------\n")
         .use(runWebHook(webhook))
     })
   };
@@ -43,6 +44,7 @@ var getWebHooks = exports.getWebHooks = function () {
           temp = temp.replace("&amp;", "&")
           webhooks.push(temp);
         });
+        console.log('\nFound all Webhooks urls')
       });
   };
 };
@@ -91,5 +93,3 @@ var giveUpHooks = exports.giveUpHooks = function (){
     })
   };
 };
-//URL-link-example:
-//https://mandrillapp.com/settings/webhooks/curl-batch?id=3&batch=2014-10-07%2021:31:27.861136539
