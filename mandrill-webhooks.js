@@ -1,6 +1,5 @@
 //Create By: @patvice & @uri
 
-
 var exec = require('child_process').exec;
 var fs = require ('fs');
 
@@ -20,12 +19,13 @@ var login = exports.login = function(username, password) {
 
 var collectWebHook = exports.collectWebHook = function () {
   return function (nightmare) {
-    webhooks.forEach(function (webhook){
+    webhooks.forEach(function (webhook, index){
       nightmare
+        console.log('Clean webhook #'+(index+1)+"\n--------------------------------\n")
         .use(runWebHook(webhook))
     })
-  }
-}
+  };
+};
 
 var getWebHooks = exports.getWebHooks = function () {
   return function(nightmare) {
@@ -44,13 +44,12 @@ var getWebHooks = exports.getWebHooks = function () {
           temp = temp.replace("&amp;", "&")
           webhooks.push(temp);
         });
-        console.log(webhooks);
+        console.log('\nFound all Webhooks urls')
       });
   };
 };
 
 var runWebHook = exports.runWebHooks = function (webhook) {
-  var removeWebhook;
   return function (nightmare) {
     nightmare
       .goto('https://mandrillapp.com'+webhook)
@@ -63,8 +62,6 @@ var runWebHook = exports.runWebHooks = function (webhook) {
         fs.writeFile('mandrill-webhook.txt', res.innerHTML, function (err) {
           if(err){
             console.log(err);
-          } else{
-            console.log("\nPrinted to mandrillapp-webhook.txt")
           }
         });
 
@@ -75,10 +72,9 @@ var runWebHook = exports.runWebHooks = function (webhook) {
 
         rgExCurl = /(curl .*\')/;
         var curl = res.match(rgExCurl);
-        console.log('\nCommand: '+curl)
         exec(curl, function (err, stdout, stderr) {
-          console.log('\nstdout: ' + stdout)
-          console.log('\nstderr '+ stderr)
+          console.log('\n' + stdout)
+          console.log('\n'+ stderr)
           if (err !== null){
             console.log('exec err: ' + err);
           }
@@ -95,7 +91,5 @@ var giveUpHooks = exports.giveUpHooks = function (){
         .click('td > a.btn.btn-small.btn-danger')
         .wait()
     })
-  }
+  };
 };
-//URL-link-example:
-//https://mandrillapp.com/settings/webhooks/curl-batch?id=3&batch=2014-10-07%2021:31:27.861136539
