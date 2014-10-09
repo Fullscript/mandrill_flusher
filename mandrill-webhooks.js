@@ -21,8 +21,7 @@ var collectWebHook = exports.collectWebHook = function () {
   return function (nightmare) {
     webhooks.forEach(function (webhook, index){
       nightmare
-        console.log('Clean webhook #'+(index+1)+"\n--------------------------------\n")
-        .use(runWebHook(webhook))
+        .use(runWebHook(webhook, index))
     })
   };
 };
@@ -49,7 +48,7 @@ var getWebHooks = exports.getWebHooks = function () {
   };
 };
 
-var runWebHook = exports.runWebHooks = function (webhook) {
+var runWebHook = exports.runWebHooks = function (webhook, index) {
   return function (nightmare) {
     nightmare
       .goto('https://mandrillapp.com'+webhook)
@@ -69,7 +68,7 @@ var runWebHook = exports.runWebHooks = function (webhook) {
       .evaluate (function (page) {
         return document.documentElement.innerHTML;
       }, function (res) {
-
+        console.log('Clean webhook #'+(index+1)+"\n--------------------------------\n")
         rgExCurl = /(curl .*\')/;
         var curl = res.match(rgExCurl);
         exec(curl, function (err, stdout, stderr) {
