@@ -19,6 +19,8 @@ var login = exports.login = function(username, password) {
 
 var collectWebHook = exports.collectWebHook = function () {
   return function (nightmare) {
+    if (webhooks.length == 0)
+      return
     webhooks.forEach(function (webhook, index){
       nightmare
         .use(runWebHook(webhook, index))
@@ -84,6 +86,8 @@ var runWebHook = exports.runWebHooks = function (webhook, index) {
 
 var giveUpHooks = exports.giveUpHooks = function (){
   return function (nightmare) {
+    if(webhooks.length == 0)
+      return
     webhooks.forEach(function (){
       nightmare
         .goto("https://mandrillapp.com/settings/webhooks/batches?id=3")
