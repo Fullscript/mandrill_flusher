@@ -90,7 +90,9 @@ var giveUpHooks = exports.giveUpHooks = function (){
       return
     webhooks.forEach(function (){
       nightmare
-        .goto("https://mandrillapp.com/settings/webhooks/batches?id=3")
+        .goto("https://mandrillapp.com/settings/webhooks/")
+        .click('p.stat > a')
+        .wait()
         .click('td > a.btn.btn-small.btn-danger')
         .wait()
     })
