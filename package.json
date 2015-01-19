@@ -4,7 +4,7 @@
   "description": "This is a nightmare script to clean out backlogged mandrill webhooks.",
   "main": "mandrill-webhooks.js",
   "dependencies": {
-    "nightmare": "^1.1.0"
+    "nightmare": "1.6.5"
   },
   "devDependencies": {},
   "scripts": {
